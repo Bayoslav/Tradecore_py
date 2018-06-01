@@ -14,13 +14,13 @@ import os
 import datetime
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+API_KEY = "92cf41c1d054102adf5f12231f8da35a5b07e974"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '-+hj=oro9uqpmlu^#q#*7q_d7r_8t$%a&%_3f(5t-jlw^tbah!'
-
+clearbit_key = 'sk_fa7927c49b0ccdc776a374b0b86b2a82'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

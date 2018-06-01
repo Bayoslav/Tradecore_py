@@ -4,8 +4,7 @@ from django.utils import timezone as timezone
 import jwt
 from datetime import timedelta,datetime
 from TC_task import settings
-import pytz
-
+import pytz,clearbit
 
 
 class UserManager(BaseUserManager):
@@ -18,11 +17,16 @@ class UserManager(BaseUserManager):
         #print(email)
         #password = kwargs.get('password')
         #print(password)
+        clearbit.key = settings.clearbit_key
         print(email)
         print(username)
+        extra_data = clearbit.Person.find(email=email, stream=True)
+        if(extra_data == None):
+            extra_data = "{}"
         user = self.model(
             email=self.normalize_email(email),
-            username=username
+            username=username,
+            extra_data=extra_data
            # enrichjson= enrichjson,
         )
         user.set_password(password)
@@ -53,6 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    extra_data = models.CharField(max_length=900,default="{}") #would use JSONField for this if I was using PostgreSQL!!!
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
     def generate_jwt_token(self):

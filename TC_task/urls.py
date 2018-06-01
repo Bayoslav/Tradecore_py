@@ -26,5 +26,7 @@ urlpatterns = [
     path('api-token-refresh/', refresh_jwt_token),
     path('api-token-verify/',verify_jwt_token),
     path('posts/', PostView.as_view(),name='post-detail'),
+    path('like/',LikeView.as_view()),
     path('like/<int:post_id>',LikeView.as_view()),
+   
 ]
