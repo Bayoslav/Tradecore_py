@@ -19,7 +19,7 @@ class PostSerializer(serializers.ModelSerializer):
     #date = serializers.DateTimeField(default=datetime.now())
     likes = serializers.PrimaryKeyRelatedField(
         many=True,read_only=True)
-    #num_likes = len(likes)
+    print(len(likes))
     #user = serializers.Field(source='user.id')
     class Meta:
         model = Post
