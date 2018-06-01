@@ -73,10 +73,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Post(models.Model):
     title = models.CharField(max_length=120)
     body = models.TextField(max_length=9000)
-    author = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 class Like(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)
-    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    post = models.ForeignKey('Post',related_name='likes', on_delete=models.CASCADE)
     date = models.DateTimeField('date liked',auto_now_add=True)
 
