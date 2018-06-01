@@ -14,12 +14,18 @@ class LikeView(APIView):
         print(post_id)
         post_obj = Post.objects.get(id=post_id)
         #user_id = request.user.id
-        obj = Like(user=request.user,post=post_obj)
-        obj.save()
         data = {
-            "message" : "Success"
-        }
-        return Response(data)
+                "message" : "Success"
+            }
+        try:
+            dad = Like.objects.get(user=request.user,post=post_obj)
+        except:
+            obj = Like(user=request.user,post=post_obj)
+            obj.save()
+        else:
+            dad.delete()
+
+        return Response(data,status=status.HTTP_201_CREATED)
 class UserView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
