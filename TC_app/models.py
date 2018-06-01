@@ -18,8 +18,7 @@ class UserManager(BaseUserManager):
         #password = kwargs.get('password')
         #print(password)
         clearbit.key = settings.clearbit_key
-        print(email)
-        print(username)
+    
         extra_data = clearbit.Person.find(email=email, stream=True)
         if(extra_data == None):
             extra_data = "{}"

@@ -14,15 +14,17 @@ class LikeView(APIView):
     serializer_class = LikeSerializer
     permission_classes = (IsAuthenticated,)
     def get(self, request,post_id=0):
-        if (post_id==0):
+        if (post_id==0): 
             queryset = Like.objects.all()
-            #queryset = self.get_queryset()
-            print(queryset)
-            serializer = LikeSerializer(queryset,many=True)
-            #print(serializer.data)    
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            #queryset = self.get_queryset()  
         else:
-            print(post_id)
+            post = Post.objects.get(id=post_id)
+            queryset = Like.objects.get(post=post)
+        serializer = LikeSerializer(queryset,many=True)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    def post(self, request):
+            #print(post_id)
+            post_id = request.POST.get('post_id')
             post_obj = Post.objects.get(id=post_id)
             #user_id = request.user.id
             data = {
@@ -45,7 +47,7 @@ class UserView(generics.ListCreateAPIView):
         email = request.data['email']
         url = 'https://api.hunter.io/v2/email-verifier?email=' + email + '&api_key=' + API_KEY
         r = requests.get(url)
-        print(r.text)
+        #print(r.text)
         dzejson = json.loads(r.text)
         score = dzejson.get('data').get('score')
         '''doing it like this because hunter has changed it's privacy policy recently hence the api is unclear'''
@@ -89,7 +91,7 @@ class PostView(generics.ListCreateAPIView):
     def list(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
         queryset = self.get_queryset()
-        print(queryset)
+        #print(queryset)
         serializer_context = {
             'request': (request),
         }
