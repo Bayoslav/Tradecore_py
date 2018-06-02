@@ -11,7 +11,7 @@ import requests,json
 from TC_task.settings import API_KEY
 class UserPosts(APIView):
     serializer_class = PostSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     def get(self, request,user_id):
         user = User.objects.get(id=user_id)
         queryset = Post.objects.filter(user=user)
@@ -52,12 +52,13 @@ class UserView(generics.ListCreateAPIView):
     permission_classes = (AllowAny,)
     def post(self, request):
         email = request.data['email']
-        url = 'https://api.hunter.io/v2/email-verifier?email=' + email + '&api_key=' + API_KEY
+        '''url = 'https://api.hunter.io/v2/email-verifier?email=' + email + '&api_key=' + API_KEY
         r = requests.get(url)
         #print(r.text)
         dzejson = json.loads(r.text)
         score = dzejson.get('data').get('score')
-        #doing it like this because hunter has changed it's privacy policy recently hence the api is unclear
+        #doing it like this because hunter has changed it's privacy policy recently hence the api is unclear'''
+        score=51
         if(int(score)>50): 
             serializer = self.serializer_class(data=request.data)
             

@@ -60,7 +60,7 @@ def can_like(jsonic):
         if((len(post['likes']))==0):
             return True
         print(post['id'])
-        print('jbg')
+        #print('jbg')
         return False
 
 
@@ -78,14 +78,25 @@ for bot in bot_list:
             print("LIMIT REACHED")
             break
         if(bot['id']!=post['user']):
-            
-            headers = {'Authorization' : "JWT " + bot['token']}
-            b_dic = next(mot for mot in bot_list if mot["id"] == post['user'])
-            print("\n\n" + str(b_dic["posts"]) + "\n\n")
-            num = random.choice(b_dic["posts"]) #does the random
-            headers = {'Authorization' : "JWT " + bot['token']}
-            r = requests.post("http://127.0.0.1:8000/likes/",data={'post_id' : num},headers=headers)
-            bot['likes'] += 1
-            print("Liking post with an id - two :", num)
-            
+            if((len(post['likes']))==0):
+                
+                b_dic = next(mot for mot in bot_list if mot["id"] == post['user'])
+                print("\n\n" + str(b_dic["posts"]) + "\n\n")
+                num = random.choice(b_dic["posts"]) #does the random
+                headers = {'Authorization' : "JWT " + bot['token']}
+                r = requests.post("http://127.0.0.1:8000/likes/",data={'post_id' : num},headers=headers)
+                bot['likes'] += 1
+                print("Liking post with an id - two :", num)
+            else:
+                url = "http://127.0.0.1:8000/posts/user/" + str(post['user'])
+                r = requests.get(url,headers=headers)
+                jsonic = json.loads(r.text)  #here we check if one of the posts made by the user is liked or not
+                if(can_like(jsonic)): 
+                    b_dic = next(mot for mot in bot_list if mot["id"] == post['user'])
+                    print("\n\n" + str(b_dic["posts"]) + "\n\n")
+                    num = random.choice(b_dic["posts"]) #does the random
+                    #headers = {'Authorization' : "JWT " + bot['token']}
+                    r = requests.post("http://127.0.0.1:8000/likes/",data={'post_id' : num},headers=headers)
+                    bot['likes'] += 1
+                    print("Liking post with an id - three :", num)
 ## 
