@@ -52,13 +52,17 @@ class UserView(generics.ListCreateAPIView):
     permission_classes = (AllowAny,)
     def post(self, request):
         email = request.data['email']
-        '''url = 'https://api.hunter.io/v2/email-verifier?email=' + email + '&api_key=' + API_KEY
+        url = 'https://api.hunter.io/v2/email-verifier?email=' + email + '&api_key=' + API_KEY
         r = requests.get(url)
         #print(r.text)
         dzejson = json.loads(r.text)
-        score = dzejson.get('data').get('score')
+        try:
+            score = dzejson.get('data').get('score')
+        except:
+            score=51
+            print("Hunter API LIMIT REACHED.")
         #doing it like this because hunter has changed it's privacy policy recently hence the api is unclear'''
-        score=51
+        
         if(int(score)>50): 
             serializer = self.serializer_class(data=request.data)
             
