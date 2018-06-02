@@ -9,7 +9,14 @@ from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework.response import Response
 import requests,json
 from TC_task.settings import API_KEY
-
+class UserPosts(APIView):
+    serializer_class = PostSerializer
+    permission_classes = (AllowAny,)
+    def get(self, request,user_id):
+        user = User.objects.get(id=user_id)
+        queryset = Post.objects.filter(user=user)
+        serializer = PostSerializer(queryset,many=True)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 class LikeView(APIView):
     serializer_class = LikeSerializer
     permission_classes = (IsAuthenticated,)
@@ -45,20 +52,20 @@ class UserView(generics.ListCreateAPIView):
     permission_classes = (AllowAny,)
     def post(self, request):
         email = request.data['email']
-        url = 'https://api.hunter.io/v2/email-verifier?email=' + email + '&api_key=' + API_KEY
+        '''url = 'https://api.hunter.io/v2/email-verifier?email=' + email + '&api_key=' + API_KEY
         r = requests.get(url)
         #print(r.text)
         dzejson = json.loads(r.text)
         score = dzejson.get('data').get('score')
-        '''doing it like this because hunter has changed it's privacy policy recently hence the api is unclear'''
+        doing it like this because hunter has changed it's privacy policy recently hence the api is unclear
         if(int(score)>50): 
         
-            serializer = self.serializer_class(data=request.data)
+            
         else:
             data = {"message" : "Email undeliverable"}
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)'''
         
-        
+        serializer = self.serializer_class(data=request.data)
         
         if serializer.is_valid():
             serializer.save()
