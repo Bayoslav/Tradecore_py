@@ -9,6 +9,8 @@ from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework.response import Response
 import requests,json
 from TC_task.settings import API_KEY
+
+
 class UserPosts(APIView):
     serializer_class = PostSerializer
     permission_classes = (IsAuthenticated,)
@@ -17,6 +19,7 @@ class UserPosts(APIView):
         queryset = Post.objects.filter(user=user)
         serializer = PostSerializer(queryset,many=True)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    
 class LikeView(APIView):
     serializer_class = LikeSerializer
     permission_classes = (IsAuthenticated,)
@@ -46,6 +49,7 @@ class LikeView(APIView):
                 dad.delete()
 
             return Response(data,status=status.HTTP_201_CREATED)
+        
 class UserView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
