@@ -11,7 +11,7 @@ chardet==3.0.4
 chrome-gnome-shell==0.0.0
 clearbit==0.1.7
 command-not-found==0.3
-cryptography==1.9
+cryptography==3.2
 cupshelpers==1.0
 decorator==4.0.11
 defer==1.0.6
